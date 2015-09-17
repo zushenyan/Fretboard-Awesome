@@ -1,0 +1,27 @@
+// any name starts with default should be able to modify by js
+
+// color
+$default-string-color: #d59352;
+$default-fretboard-bg: #333330;
+
+$default-tuning-bg: #333330;
+$default-tuning-font-color: white;
+
+$default-note-bg-color: white;
+$default-note-font-color: black;
+
+$fretbar-color: #A57164;
+$inlays-color: #A57164;
+$nut-color: #FBF3D3;
+$shadow-color: #151515;
+
+// size
+$default-fret-height: 80px;
+$default-fret-width: 40px;
+
+$tuning-height: 40px;
+$tuning-width: $default-fret-width;
+
+$fretbar-height: 3px;
+$nut-height: 10px;
+$inlay-width: 20px;

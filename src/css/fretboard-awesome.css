@@ -1,0 +1,142 @@
+/*
+	$position - the position you want to.
+	$direction - should be "hor", "ver" or "both", which means horizontal, vertical centering or both.
+*/
+.fa-container {
+  display: -moz-inline-flex;
+  display: -o-inline-flex;
+  display: -ms-inline-flex;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -moz-flex-flow: column nowrap;
+  -o-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap; }
+
+.fa-tuning {
+  display: -moz-inline-flex;
+  display: -o-inline-flex;
+  display: -ms-inline-flex;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -moz-flex-flow: row nowrap;
+  -o-flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  -webkit-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 10px solid #FBF3D3;
+  box-shadow: 0px 0px 1px 2px #151515;
+  background-color: #333330;
+  color: white;
+  z-index: 0; }
+  .fa-tuning div {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    width: 40px; }
+    .fa-tuning div span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      top: 50%;
+      -moz-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: block; }
+
+.fa-fretboard {
+  display: -moz-inline-flex;
+  display: -o-inline-flex;
+  display: -ms-inline-flex;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -moz-flex-flow: row nowrap;
+  -o-flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  -webkit-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  box-shadow: 0px 0px 1px 2px #151515;
+  background: #333330;
+  z-index: 0; }
+
+.fa-string {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline-block;
+  background: transparent; }
+  .fa-string li {
+    position: relative;
+    display: block;
+    height: 80px;
+    width: 40px;
+    background: transparent;
+    border-bottom: 3px solid #A57164;
+    z-index: 1; }
+    .fa-string li:before, .fa-string li:after {
+      content: ""; }
+    .fa-string li:before {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      display: block;
+      background-color: #d59352;
+      box-shadow: -1px 0 1px 0px #151515;
+      width: 3px;
+      height: 83px; }
+    .fa-string li.inlays:after {
+      position: absolute;
+      top: 50%;
+      -moz-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      transform: translateY(-50%);
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-color: #A57164;
+      border-radius: 50%;
+      right: -10px; }
+
+.fa-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: 0 0 1px 0px #151515;
+  color: black; }
+  .fa-note.hide {
+    display: none; }
+  .fa-note span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 50%;
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: block; }
+
+/*# sourceMappingURL=fretboard-awesome.css.map */

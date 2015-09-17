@@ -1,0 +1,47 @@
+@mixin transform($transforms){
+	-moz-transform: $transforms;
+	-o-transform: $transforms;
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+	transform: $transforms;
+}
+
+/*
+	$position - the position you want to.
+	$direction - should be "hor", "ver" or "both", which means horizontal, vertical centering or both.
+*/
+@mixin centering($position: absolute, $direction: both){
+	position: $position;
+	@if $direction == hor {
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	@else if $direction == ver {
+		top: 50%;
+    @include transform(translateY(-50%));
+	}
+	@else if $direction == both{
+		left: 0;
+		right: 0;
+		margin: auto;
+		top: 50%;
+    @include transform(translateY(-50%));
+	}
+}
+
+@mixin display-flex($flex: flex){
+	display: -moz-#{$flex};
+	display: -o-#{$flex};
+	display: -ms-#{$flex};
+	display: -webkit-#{$flex};
+	display: $flex;
+}
+
+@mixin flex-flow($value: (row nowrap)){
+	-moz-flex-flow: $value;
+	-o-flex-flow: $value;
+	-ms-flex-flow: $value;
+	-webkit-flex-flow: $value;
+	flex-flow: $value;
+}
