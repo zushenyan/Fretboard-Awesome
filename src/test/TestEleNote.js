@@ -1,13 +1,17 @@
 (function(){
 	var a;
-	a = new fa.EleNote().init("Ab", "#", "white");
+	a = new fa.EleNote().init("Ab", "#", "white", 3);
+
 	a.setNoteName("B#", "b");
-	a.setVisible(false);
+	a.hide();
 	a.setBgColor("#eeeeee");
-	// a.markInlays();
+	a.setStringGauge(5);
+	a.markInlays();
+
 	console.log(a);
 	console.log(a.getEle().classList);
 	console.log(a.getBgColor());
-	console.log(a.getEle().childNodes[0].innerText);
+	console.log(a.getEle().childNodes);
+	console.log(a.getStringGauge());
 	console.log(a.hasInlays());
 })();

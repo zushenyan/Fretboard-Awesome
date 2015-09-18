@@ -1,7 +1,7 @@
 export class MusicTheory {
-	/*
-		@{string} note - accept a string in specified notation, see normalize() for more info.
-		@{string} convertTo - should either be "#" or "b" in string type.
+	/**
+		@param {string} note - accept a string in specified notation, see normalize() for more info.
+		@param {string} convertTo - should either be "#" or "b" in string type.
 		@return {string} - will return the query result.
 	*/
 	static convertAccidental(note, convertTo = "#"){
@@ -55,8 +55,8 @@ export class MusicTheory {
 		}
 	}
 
-	/*
-		@{string, array} note - accepts string of array of strings. string should be within 2 characters long and written in fashion like "Cb", "D", "D#",
+	/**
+		@param {string, array} note - accepts string of array of strings. string should be within 2 characters long and written in fashion like "Cb", "D", "D#",
 										 if you input "Cbbbbb", the function will still do the parse and return "Cb" as the result.
 		@return {null, string} - will return null if no pattern is found, or return a string with capitalized first letter within 2 length.
 	*/
@@ -105,11 +105,11 @@ export class MusicTheory {
 		}
 	}
 
-	/*
-		@{string} startKey - the key you want to start with. Format should be "C#", "d", "eb"...
-		@{number} length - how long the array should function return.
-		@{string} noration - either "#" or "b".
-		@{boolean} includeStart - whether to include the start key.
+	/**
+		@param {string} startKey - the key you want to start with. Format should be "C#", "d", "eb"...
+		@param {number} length - how long the array should function return.
+		@param {string} noration - either "#" or "b".
+		@param {boolean} includeStart - whether to include the start key.
 		@return {array} - an array with string contains the sequence of keys.
 	*/
 	static tuning(startKey = "C", length = 7, notation = "#", includeStart = true){

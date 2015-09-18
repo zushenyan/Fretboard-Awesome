@@ -2,7 +2,7 @@
 @import "./utils.scss";
 
 @mixin string($gauge: 3px){
-	@include centering(absolute, hor);
+	@include centering(static, hor);
   display: block;
   background-color: $default-string-color;
   box-shadow: -1px 0 1px 0px $shadow-color;
@@ -48,7 +48,7 @@
 	@include flex-flow();
 	border-radius: 10px 10px 0 0;
 	border-bottom: $nut-height solid $nut-color;
-	box-shadow: 0px 0px 1px 2px $shadow-color;
+	box-shadow: 0px 0px 10px 2px rgba($shadow-color, 0.5);
 	background-color: $default-tuning-bg;
 	color: $default-tuning-font-color;
 
@@ -68,7 +68,7 @@
 .fa-fretboard {
 	@include display-flex(inline-flex);
 	@include flex-flow();
-	box-shadow: 0px 0px 1px 2px $shadow-color;
+	box-shadow: 0px 0px 10px 2px rgba($shadow-color, 0.5);
   background: $default-fretboard-bg;
 	z-index: 0;
 }
@@ -78,18 +78,22 @@
 	display: inline-block;
 	background: transparent;
 
-	// normal fret
 	li {
 		@include fret-setting();
 		border-bottom: $fretbar-height solid $fretbar-color;
-		z-index: 1;
 
-		&:before, &:after { content: ""; }
-		&:before { @include string(3px); }
+		&:before, &:after {
+			content: "";
+		}
 		&.inlays {
-			&:after {
+			&:after{
 				@include inlays($inlay-width);
 			}
+		}
+
+		&>div {
+			@include string(3px);
+			z-index: 1;
 		}
 	}
 }

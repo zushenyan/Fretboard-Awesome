@@ -27,7 +27,7 @@
   flex-flow: row nowrap;
   border-radius: 10px 10px 0 0;
   border-bottom: 10px solid #FBF3D3;
-  box-shadow: 0px 0px 1px 2px #151515;
+  box-shadow: 0px 0px 10px 2px rgba(21, 21, 21, 0.5);
   background-color: #333330;
   color: white;
   z-index: 0; }
@@ -60,7 +60,7 @@
   -ms-flex-flow: row nowrap;
   -webkit-flex-flow: row nowrap;
   flex-flow: row nowrap;
-  box-shadow: 0px 0px 1px 2px #151515;
+  box-shadow: 0px 0px 10px 2px rgba(21, 21, 21, 0.5);
   background: #333330;
   z-index: 0; }
 
@@ -76,20 +76,9 @@
     height: 80px;
     width: 40px;
     background: transparent;
-    border-bottom: 3px solid #A57164;
-    z-index: 1; }
+    border-bottom: 3px solid #A57164; }
     .fa-string li:before, .fa-string li:after {
       content: ""; }
-    .fa-string li:before {
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: auto;
-      display: block;
-      background-color: #d59352;
-      box-shadow: -1px 0 1px 0px #151515;
-      width: 3px;
-      height: 83px; }
     .fa-string li.inlays:after {
       position: absolute;
       top: 50%;
@@ -104,6 +93,17 @@
       background-color: #A57164;
       border-radius: 50%;
       right: -10px; }
+    .fa-string li > div {
+      position: static;
+      left: 0;
+      right: 0;
+      margin: auto;
+      display: block;
+      background-color: #d59352;
+      box-shadow: -1px 0 1px 0px #151515;
+      width: 3px;
+      height: 83px;
+      z-index: 1; }
 
 .fa-note {
   position: absolute;

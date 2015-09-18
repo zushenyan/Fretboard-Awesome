@@ -10,9 +10,9 @@ export class Note {
 		return this;
 	}
 
-	/*
-		@{string} note - only takes string. The format should be "d#", "E", "cb"...
-		@{string} notation - only takes string. The format should either be "#" or "b".
+	/**
+		@param {string} note - only takes string. The format should be "d#", "E", "cb"...
+		@param {string} notation - only takes string. The format should either be "#" or "b".
 	*/
 	setNoteName(note, notation = "#") {
 		if(typeof note === "string" || note instanceof String){

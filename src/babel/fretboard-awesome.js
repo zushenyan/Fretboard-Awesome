@@ -1,7 +1,10 @@
 import {MusicTheory} from "./MusicTheory";
 import {Note} from "./Note";
+import {AbstractFretboard} from "./AbstractFretboard";
 import {EleNote} from "./EleNote";
-import {Fretboard} from "./Fretboard";
+import {EleString} from "./EleString";
+import {EleFretboard} from "./EleFretboard";
+import {FretboardAwesome} from "./FretboardAwesome";
 
 (function(win){
 	"use strict";
@@ -10,7 +13,10 @@ import {Fretboard} from "./Fretboard";
 		MusicTheory: MusicTheory,
 		Note: Note,
 		EleNote: EleNote,
-		Fretboard: Fretboard
+		AbstractFretboard: AbstractFretboard,
+		EleFretboard: EleFretboard,
+		EleString: EleString,
+		FretboardAwesome: FretboardAwesome
 	}
 
 	win.fa = fa;
