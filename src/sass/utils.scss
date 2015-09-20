@@ -12,12 +12,12 @@
 */
 @mixin centering($position: absolute, $direction: both){
 	position: $position;
-	@if $direction == hor {
+	@if $direction == horizontal {
 		left: 0;
 		right: 0;
 		margin: auto;
 	}
-	@else if $direction == ver {
+	@else if $direction == vertical {
 		top: 50%;
     @include transform(translateY(-50%));
 	}
@@ -28,6 +28,12 @@
 		top: 50%;
     @include transform(translateY(-50%));
 	}
+}
+
+@mixin unstyle-list(){
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
 }
 
 @mixin display-flex($flex: flex){

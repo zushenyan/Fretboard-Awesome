@@ -1,6 +1,7 @@
 import {MusicTheory} from "./MusicTheory";
 import {AbstractFretboard} from "./AbstractFretboard";
 import {EleString} from "./EleString";
+import {Config} from "./Config";
 
 export class EleFretboard extends AbstractFretboard{
 	constructor(){
@@ -8,11 +9,16 @@ export class EleFretboard extends AbstractFretboard{
 		this._uiFretboard = document.createElement("div");
 		this._eleStrings = []; // array of eleString
 		this._lastLength = -1;
+		this._currentNotation = "";
+		this._orientation = Config.ORI_VERTICAL;
+		this._startGauge = 6;
 	}
 
-	init(tuning, length, notation = "#", includeStart, startGauge = 12){
+	init(tuning, length, notation = "#", includeOpenFret = false, startGauge = 12, orientation = Config.ORI_VERTICAL){
 		initUI.call(this);
-		this.setTuning(tuning, length, notation, includeStart, startGauge);
+		this.setTuning(tuning, length, notation, includeOpenFret);
+		this.setOrientation(orientation);
+		this.setStringGauge(startGauge);
 		return this;
 
 		function initUI(){
@@ -24,10 +30,9 @@ export class EleFretboard extends AbstractFretboard{
 		@param {string} tune - in what key we are tuning.
 		@param {number} length - how long should the result be.
 		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeStart - whether to include the start key.
-		@param {number} stringGauge - how thick the string will be displayed, unit in px.
+		@param {boolean} includeOpenFret - whether to include the start key.
 	*/
-	setTuning(tuning, length, notation = "#", includeStart = false, startGauge){
+	setTuning(tuning, length, notation = "#", includeOpenFret = false){
 		if(!(tuning instanceof Array)){
 			throw new TypeError("parameter tuning should be type of array: " + tuning);
 		}
@@ -37,11 +42,8 @@ export class EleFretboard extends AbstractFretboard{
 		if(!(notation === "#" ||  notation === "b")){
 			throw new TypeError("notation should either be '#' or 'b' in string type: " + notation);
 		}
-		if(typeof includeStart !== "boolean"){
-			throw new TypeError("parameter includeStart should be type of boolean: " + includeStart);
-		}
-		if(!(typeof stringGauge !== "number") && stringGauge < 0){
-			throw new TypeError("parameter stringGauge should be a number which is greater than -1: " + stringGauge);
+		if(typeof includeOpenFret !== "boolean"){
+			throw new TypeError("parameter includeOpenFret should be type of boolean: " + includeOpenFret);
 		}
 		// if parameter length is equal to the length passed last time, then only updates the text inside these notes.
 		if((tuning.length === this._eleStrings.length) &&
@@ -55,12 +57,13 @@ export class EleFretboard extends AbstractFretboard{
 			this._uiFretboard.innerHTML = "";
 			this._eleStrings = [];
 			for(let i = 0; i < tuning.length; i++){
-				let result = new EleString().init(tuning[i], length, notation, includeStart, startGauge - i);
+				let result = new EleString().init(tuning[i], length, notation, includeOpenFret, this.getStartGauge() - i, this.getOrientation());
 				this._eleStrings.push(result);
 				this._uiFretboard.appendChild(result.getEle());
 			}
-			this._lastLength = length;
 		}
+		this._lastLength = length;
+		this._currentNotation = notation;
 	}
 
 	/**
@@ -80,10 +83,40 @@ export class EleFretboard extends AbstractFretboard{
 	/**
 		@param {number} startGauge - how thick is the leftest string. The following strings' thickness will be in descended order.
 	*/
-	setStringGauge(startGauge){
-		for(let i = 0; i > this._eleStrings.length; i++){
+	setStringGauge(startGauge, orientation){
+		if(typeof startGauge !== "number" || startGauge < 0){
+			throw new TypeError("parameter startGauge should be greater than -1:" + startGauge);
+		}
+		for(let i = 0; i < this._eleStrings.length; i++){
 			this._eleStrings[i].setStringGauge(startGauge - i);
 		}
+		this._startGauge = startGauge;
+	}
+
+	getStringGauge(){
+		let result = [];
+		for(let i = 0; i < this._eleStrings.length; i++){
+			result.push(this._eleStrings[i].getStringGauge());
+		}
+		return result;
+	}
+
+	getStartGauge(){
+		return this._startGauge;
+	}
+
+	setOrientation(orientation){
+		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
+			throw new TypeError("parameter orientation should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL: " + orientation);
+		}
+		for(let i = 0; i < this._eleStrings.length; i++){
+			this._eleStrings[i].setOrientation(orientation);
+		}
+		this._orientation = orientation;
+	}
+
+	getOrientation(){
+		return this._orientation;
 	}
 
 	getEle(){
@@ -100,5 +133,15 @@ export class EleFretboard extends AbstractFretboard{
 			tuning.push(this._eleStrings[i].getTuning());
 		}
 		return tuning;
+	}
+
+	getCurrentNotation(){
+		return this._currentNotation;
+	}
+
+	markInlays(arr){
+		let mid = this._eleStrings.length / 2 - 1;
+		mid = mid < 0 ? 0 : mid;
+		return this._eleStrings[mid].markInlays(arr);
 	}
 }

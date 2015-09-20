@@ -1,16 +1,21 @@
 import {MusicTheory} from "./MusicTheory";
 import {EleNote} from "./EleNote";
+import {Config} from "./Config";
 
 export class EleString{
 	constructor(){
 		this._uiString = document.createElement("ul");
 		this._eleNotes = []; // array of EleNote
 		this._tuning = "";
+		this._stringGauge = 0;
+		this._orientation = Config.ORI_VERTICAL;
 	}
 
-	init(tuning, length, notation, includeStart, stringGauge){
+	init(tuning, length = 12, notation = "#", includeOpenFret = false, stringGauge = 6, orientation = Config.ORI_VERTICAL){
 		initUI.call(this);
-		this.setTuning(tuning, length, notation, includeStart, stringGauge);
+		this.setTuning(tuning, length, notation, includeOpenFret);
+		this.setOrientation(orientation);
+		this.setStringGauge(stringGauge);
 		return this;
 
 		function initUI(){
@@ -22,10 +27,9 @@ export class EleString{
 		@param {string} tuning - in what key we are tuning.
 		@param {number} length - how long should the result be.
 		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeStart - whether to include the start key.
-		@param {number} stringGauge - how thick the string will be displayed, unit in px.
+		@param {boolean} includeOpenFret - whether to include the start key.
 	*/
-	setTuning(tuning, length, notation = "#", includeStart = false, stringGauge = 12){
+	setTuning(tuning, length, notation = "#", includeOpenFret = false){
 		if(!(typeof tuning === "string" || tuning instanceof String)){
 			throw new TypeError("parameter tuning should be string: " + tuning);
 		}
@@ -35,14 +39,11 @@ export class EleString{
 		if(!(notation === "#" || notation === "b")){
 			throw new TypeError("parameter notation should be either '#' or 'b': " + notation);
 		}
-		if(typeof includeStart !== "boolean"){
-			throw new TypeError("parameter includeStart should be type of boolean: " + includeStart);
-		}
-		if(!(typeof stringGauge !== "number") && stringGauge < 0){
-			throw new TypeError("parameter stringGauge should be a number which is greater than -1: " + stringGauge);
+		if(typeof includeOpenFret !== "boolean"){
+			throw new TypeError("parameter includeOpenFret should be type of boolean: " + includeOpenFret);
 		}
 		// if parameter length is equal to the length passed last time, then only updates the text inside these notes.
-		let notes = MusicTheory.tuning(tuning, length, notation, includeStart);
+		let notes = MusicTheory.tuning(tuning, length, notation, includeOpenFret);
 		if(this._eleNotes.length === notes.length){
 			for(let i = 0; i < notes.length; i++){
 				this._eleNotes[i].setNoteName(notes[i], notation);
@@ -53,7 +54,7 @@ export class EleString{
 			this._uiString.innerHTML = "";
 			this._eleNotes = [];
 			for(let i = 0; i < notes.length; i++){
-				let result = new EleNote().init(notes[i], notation, "white", stringGauge);
+				let result = new EleNote().init(notes[i], notation, "white", this.getStringGauge(), this.getOrientation());
 				this._eleNotes.push(result);
 				this._uiString.appendChild(result.getEle());
 			}
@@ -63,6 +64,34 @@ export class EleString{
 
 	getTuning(){
 		return this._tuning;
+	}
+
+	setStringGauge(gauge){
+		if(typeof gauge !== "number" || gauge < 0){
+			throw new TypeError("parameter gauge should be greater than 0:" + gauge);
+		}
+		for(let i = 0; i < this._eleNotes.length; i++){
+			this._eleNotes[i].setStringGauge(gauge);
+		}
+		this._stringGauge = gauge;
+	}
+
+	getStringGauge(){
+		return this._stringGauge;
+	}
+
+	setOrientation(orientation){
+		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
+			throw new TypeError("parameter orientation should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL: " + orientation);
+		}
+		for(let i = 0; i < this._eleNotes.length; i++){
+			this._eleNotes[i].setOrientation(orientation);
+		}
+		this._orientation = orientation;
+	}
+
+	getOrientation(){
+		return this._orientation;
 	}
 
 	/**
@@ -103,5 +132,46 @@ export class EleString{
 
 	getEleNotes(){
 		return this._eleNotes;
+	}
+
+	/**
+		@param {array} targetFrets - indicates which frets you want to mark inlays. Will throw error if target fret doesn't exist.
+		For simplicity, use human index convention on array, don't use computer field convention. For example, if you want to mark inalys
+		on fret 1, 3, 5, pass [1, 3, 5], don't try [0, 2, 4].
+		@return {array} - returns elements which were being marked.
+	*/
+	markInlays(targetFrets){
+		if(!(targetFrets instanceof Array)){
+			throw new TypeError("parameter targetFrets should be type of array with number: " + targetFrets);
+		}
+		clearInlays.call(this);
+		targetFrets = findUnique(targetFrets);
+		let result = [];
+		for(let i = 0; i < targetFrets.length; i++){
+			let index = targetFrets[i] - 1;
+			if(this._eleNotes[index]){
+				this._eleNotes[index].markInlays();
+				result.push(this._eleNotes[index]);
+			}
+			else{
+				throw new Error("target fret doesn't exist. targetFrets: " + targetFrets + ", fret length: " + this._eleNotes.length + ", translated index: " + index);
+			}
+		}
+		return result;
+
+		function clearInlays(){
+			for(let i = 0; i < this._eleNotes.length; i++){
+				this._eleNotes[i].removeInlays();
+			}
+		}
+
+		function findUnique(arr){
+			return arr.reduce(function(a, r){
+				if(a.indexOf(r) < 0){
+					a.push(r);
+				}
+				return a;
+			}, []);
+		}
 	}
 }

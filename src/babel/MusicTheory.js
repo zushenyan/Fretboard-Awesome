@@ -109,14 +109,14 @@ export class MusicTheory {
 		@param {string} startKey - the key you want to start with. Format should be "C#", "d", "eb"...
 		@param {number} length - how long the array should function return.
 		@param {string} noration - either "#" or "b".
-		@param {boolean} includeStart - whether to include the start key.
+		@param {boolean} includeOpenFret - whether to include the start key.
 		@return {array} - an array with string contains the sequence of keys.
 	*/
-	static tuning(startKey = "C", length = 7, notation = "#", includeStart = true){
+	static tuning(startKey = "C", length = 7, notation = "#", includeOpenFret = true){
 		if((typeof startKey === "string" || startKey instanceof String) &&
 				(notation === "#" || notation === "b") &&
 				(typeof length === "number" && length > 0) &&
-				(typeof includeStart === "boolean")){
+				(typeof includeOpenFret === "boolean")){
 			startKey = MusicTheory.convertAccidental(startKey, notation);
 			let startIndex = 0;
 			let result = [];
@@ -132,12 +132,12 @@ export class MusicTheory {
 					result.push(infiniteIndexing(MusicTheory.KEYS_ACCIDENTALS_FLAT, i));
 				}
 			}
-			return includeStart ? result : result.slice(1);
+			return includeOpenFret ? result : result.slice(1);
 		}
 		else {
-			throw new TypeError("one of the following parameter is not valid: " + "\n" + startKey + "\n" + length + "\n" + notation + "\n" + includeStart);
+			throw new TypeError("one of the following parameter is not valid: " + "\n" + startKey + "\n" + length + "\n" + notation + "\n" + includeOpenFret);
 		}
-		throw new Error("what's the sorcery? " + startKey + " " + length + " " + notation + " " + includeStart);
+		throw new Error("what's the sorcery? " + startKey + " " + length + " " + notation + " " + includeOpenFret);
 
 		function infiniteIndexing(array, index){
 			index = index % array.length;

@@ -5,6 +5,7 @@ import {EleNote} from "./EleNote";
 import {EleString} from "./EleString";
 import {EleFretboard} from "./EleFretboard";
 import {FretboardAwesome} from "./FretboardAwesome";
+import {Config} from "./Config";
 
 (function(win){
 	"use strict";
@@ -16,7 +17,8 @@ import {FretboardAwesome} from "./FretboardAwesome";
 		AbstractFretboard: AbstractFretboard,
 		EleFretboard: EleFretboard,
 		EleString: EleString,
-		FretboardAwesome: FretboardAwesome
+		FretboardAwesome: FretboardAwesome,
+		Config: Config
 	}
 
 	win.fa = fa;

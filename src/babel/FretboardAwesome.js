@@ -1,4 +1,5 @@
 import {EleFretboard} from "./EleFretboard";
+import {Config} from "./Config";
 
 export class FretboardAwesome{
 	constructor(){
@@ -8,20 +9,22 @@ export class FretboardAwesome{
 		this._eleFretboard = null;
 	}
 
-	init(targeId, tuning, length, notation, includeStart, startGauge){
-		initUI.call(this, targeId, tuning, length, notation, includeStart, startGauge);
+	init(targeId, tuning, length, notation, includeStart, startGauge, orientation){
+		initUI.call(this, targeId, tuning, length, notation, includeStart, startGauge, orientation);
 		this._updateTuningUI();
 		return this;
 
-		function initUI(targetId, tuning, length, notation, includeStart, startGauge){
+		function initUI(targetId, tuning, length, notation, includeStart, startGauge, orientation){
 			this._uiMainContainer = document.getElementById(targetId);
 
 			this._uiMainContainer.classList.add("fa-container");
 			this._uiTuningContainer.classList.add("fa-tuning");
-			this._eleFretboard = new EleFretboard().init(tuning, length, notation, includeStart, startGauge);
+			this._eleFretboard = new EleFretboard().init(tuning, length, notation, includeStart, startGauge, orientation);
 
 			this._uiMainContainer.appendChild(this._uiTuningContainer);
 			this._uiMainContainer.appendChild(this._eleFretboard.getEle());
+
+			this.setOrientation(orientation);
 		}
 	}
 
@@ -30,9 +33,8 @@ export class FretboardAwesome{
 		@param {number} length - how long should the result be.
 		@param {string} notation - in either "#" or "b".
 		@param {boolean} includeStart - whether to include the start key.
-		@param {number} stringGauge - how thick the string will be displayed, unit in px.
 	*/
-	setTuning(tuning = MusicTheory.STANDARD_GUITAR_TUNING, length = 12, notation = "#", includeStart = false, startGauge = 12){
+	setTuning(tuning = MusicTheory.STANDARD_GUITAR_TUNING, length = 12, notation = "#", includeStart = false){
 		if(!(tuning instanceof Array)){
 			throw new TypeError("parameter tuning should be type of array: " + tuning);
 		}
@@ -48,7 +50,7 @@ export class FretboardAwesome{
 		if(!(typeof stringGauge !== "number") && stringGauge < 0){
 			throw new TypeError("parameter stringGauge should be a number which is greater than -1: " + stringGauge);
 		}
-		this._eleFretboard.setTuning(tuning, length, notation, includeStart, startGauge);
+		this._eleFretboard.setTuning(tuning, length, notation, includeStart);
 		this._updateTuningUI();
 	}
 
@@ -58,6 +60,8 @@ export class FretboardAwesome{
 		for(let i = 0; i < tuning.length; i++){
 			let wrapperDiv = document.createElement("div");
 			let textSpan = document.createElement("span");
+			wrapperDiv.classList.add("fa-keytext-container");
+			textSpan.classList.add("fa-keytext");
 			textSpan.appendChild(document.createTextNode(tuning[i]));
 			wrapperDiv.appendChild(textSpan);
 			this._uiTuningContainer.appendChild(wrapperDiv);
@@ -70,5 +74,31 @@ export class FretboardAwesome{
 
 	setStringGauge(gauge){
 		this._eleFretboard.setStringGauge(gauge);
+	}
+
+	getCurrentNotation(){
+		return this._eleFretboard.getCurrentNotation();
+	}
+
+	markInlays(arr){
+		return this._eleFretboard.markInlays(arr);
+	}
+
+	setOrientation(orientation){
+		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
+			throw new TypeError("parameter orientation should be either FretboardAwesome.ORI_VERTICAL or FretboardAwesome.ORI_HORIZONTAL: " + orientation);
+		}
+		this._uiMainContainer.classList.remove(Config.ORI_VERTICAL);
+		this._uiMainContainer.classList.remove(Config.ORI_HORIZONTAL);
+		let className = orientation === Config.ORI_VERTICAL ? Config.ORI_VERTICAL : Config.ORI_HORIZONTAL;
+		this._uiMainContainer.classList.add(className);
+		this._eleFretboard.setOrientation(orientation);
+	}
+
+	getOrientation(){
+		let ori = this._uiMainContainer.classList.contains("vertical") ? Config.ORI_VERTICAL :
+							this._uiMainContainer.classList.contains("horizontal") ? Config.ORI_HORIZONTAL :
+							-1;
+		return ori;
 	}
 }

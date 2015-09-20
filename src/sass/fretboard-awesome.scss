@@ -1,13 +1,20 @@
 @import "./variables.scss";
 @import "./utils.scss";
 
-@mixin string($gauge: 3px){
-	@include centering(static, hor);
+@mixin string($gauge: 3px, $orientation: vertical){
   display: block;
   background-color: $default-string-color;
   box-shadow: -1px 0 1px 0px $shadow-color;
-  width: $gauge;
-  height: $default-fret-height + $fretbar-height;
+	@if $orientation == vertical {
+	  width: $gauge;
+	  height: $default-fret-height + $fretbar-height;
+		@include centering(relative, horizontal);
+	}
+	@else if $orientation == horizontal {
+		width: $default-fret-height + $fretbar-height;
+	  height: $gauge;
+		@include centering(relative, vertical);
+	}
 }
 
 @mixin mark($diameter: 20px, $centering-dir: both, $bg: transparent){
@@ -19,46 +26,88 @@
 	border-radius: 50%;
 }
 
-@mixin inlays($diameter){
-	@include mark($diameter, ver, $inlays-color);
-	right: -($diameter / 2);
+@mixin inlays($diameter, $orientation: vertical){
+	@if $orientation == vertical {
+		@include mark($diameter, vertical, $inlays-color);
+		right: -($diameter / 2);
+	}
+	@else if $orientation == horizontal {
+		@include mark($diameter, horizontal, $inlays-color);
+		top: -($diameter / 2);;
+	}
 }
 
-@mixin fret-setting(){
+@mixin fret-setting($orientation: vertical){
 	position: relative;
 	display: block;
-	height: $default-fret-height;
-	width: $default-fret-width;
+	@if $orientation == vertical {
+		height: $default-fret-height;
+		width: $default-fret-width;
+	}
+	@else if $orientation == horizontal{
+		height: $default-fret-width;
+		width: $default-fret-height;
+	}
 	background: transparent;
-}
-
-@mixin unstyle-list(){
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
 }
 
 .fa-container {
 	@include display-flex(inline-flex);
-	@include flex-flow(column nowrap);
+	&.vertical {
+		@include flex-flow(column nowrap);
+		.fa-tuning {
+			@include flex-flow(row nowrap);
+			border-radius: 10px 10px 0 0;
+			border-bottom: $nut-height solid $nut-color;
+		}
+		.fa-fretboard {
+			@include flex-flow(row nowrap);
+			.fa-string {
+				@include flex-flow(column nowrap);
+				.fa-fret {
+					@include fret-setting(vertical);
+					border-bottom: $fretbar-height solid $fretbar-color;
+					.fa-string-image { @include string(3px, vertical); }
+					&.inlays { &:after { @include inlays($inlay-width, vertical); } }
+				}
+			}
+		}
+	}
+	&.horizontal {
+		@include flex-flow(row nowrap);
+		.fa-tuning {
+			@include flex-flow(column-reverse nowrap);
+			border-radius: 10px 0 0 10px;
+			border-right: $nut-height solid $nut-color;
+		}
+		.fa-fretboard {
+			@include flex-flow(column-reverse nowrap);
+			.fa-string {
+				@include flex-flow(row nowrap);
+				.fa-fret {
+					@include fret-setting(horizontal);
+					border-right: $fretbar-height solid $fretbar-color;
+					.fa-string-image { @include string(3px, horizontal); }
+					&.inlays { &:after { @include inlays($inlay-width, horizontal); } }
+				}
+			}
+		}
+	}
 }
 
 .fa-tuning {
 	@include display-flex(inline-flex);
-	@include flex-flow();
-	border-radius: 10px 10px 0 0;
-	border-bottom: $nut-height solid $nut-color;
 	box-shadow: 0px 0px 10px 2px rgba($shadow-color, 0.5);
 	background-color: $default-tuning-bg;
 	color: $default-tuning-font-color;
-
 	z-index: 0;
-	div {
+
+	.fa-keytext-container {
 		position: relative;
 		display: inline-block;
 		height: $tuning-height;
 		width: $tuning-width;
-		span {
+		.fa-keytext {
 			@include centering(absolute, both);
 			display: block;
 		}
@@ -67,7 +116,6 @@
 
 .fa-fretboard {
 	@include display-flex(inline-flex);
-	@include flex-flow();
 	box-shadow: 0px 0px 10px 2px rgba($shadow-color, 0.5);
   background: $default-fretboard-bg;
 	z-index: 0;
@@ -75,29 +123,25 @@
 
 .fa-string {
 	@include unstyle-list();
-	display: inline-block;
+	display: inline-flex;
 	background: transparent;
 
-	li {
-		@include fret-setting();
-		border-bottom: $fretbar-height solid $fretbar-color;
-
-		&:before, &:after {
+	.fa-fret {
+		&:after {
 			content: "";
 		}
 		&.inlays {
-			&:after{
-				@include inlays($inlay-width);
+			&:after {
 			}
 		}
 
-		&>div {
-			@include string(3px);
+		.fa-string-image {
 			z-index: 1;
 		}
 	}
 }
 
+// should be placed in fa-string-image
 .fa-note {
 	@include mark(30px, both, $default-note-bg-color);
   z-index: 3;
@@ -108,7 +152,7 @@
 		display: none;
 	}
 
-  span {
+  .fa-note-text {
     @include centering(absolute, both);
     display: block;
   }
