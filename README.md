@@ -24,7 +24,7 @@ Supports all the latest browsers and iOS.
     </head>
     <body>
         ...
-        <script src="fretboard-awesome.js"></script>
+        <script src="fretboard-awesome.min.js"></script>
     </body>
 </html>
 ```
@@ -60,7 +60,7 @@ var f = new fa.FreboardAwesome().init(
 	includeOpenFret = false,
 	startGauge = 6,
 	orientation = Config.ORI_VERTICAL,
-	viewportSize = Config.VIEWPORT_SIZE_DEFAULT 
+	viewportSize = Config.VIEWPORT_SIZE_DEFAULT
     );
 ```
 
@@ -73,9 +73,9 @@ var f = new fa.FreboardAwesome().init(
 		@param {boolean} includeOpenFret - whether to include the open fret.
 	*/
 	fretboard.setTuning(
-	    tuning = MusicTheory.STANDARD_GUITAR_TUNING, 
+	    tuning = MusicTheory.STANDARD_GUITAR_TUNING,
 	    length = 12,
-	    notation = "#", 
+	    notation = "#",
 	    includeOpenFret = false)
 ```
 
@@ -87,7 +87,7 @@ var f = new fa.FreboardAwesome().init(
 		{key: "D", color: "white"},
 		{key: "G", color: "white"}
 	];
-	 
+
 	// What keys in what color you want to "highlight".
 	fretboard.markKeys(mark1);
 ```
@@ -118,4 +118,3 @@ var f = new fa.FreboardAwesome().init(
 
 ### Author & Licence
 Andrew Yan, MIT Licence.
-
