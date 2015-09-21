@@ -25,7 +25,7 @@ export class EleString{
 
 	/**
 		@param {string} tuning - in what key we are tuning.
-		@param {number} length - how long should the result be.
+		@param {number} length - how long should the fretboard be.
 		@param {string} notation - in either "#" or "b".
 		@param {boolean} includeOpenFret - whether to include the start key.
 	*/

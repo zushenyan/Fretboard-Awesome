@@ -1,5 +1,6 @@
 import {EleFretboard} from "./EleFretboard";
 import {Config} from "./Config";
+import {MusicTheory} from "./MusicTheory";
 
 export class FretboardAwesome{
 	constructor(){
@@ -12,7 +13,24 @@ export class FretboardAwesome{
 		this._viewportSize = Config.VIEWPORT_SIZE_DEFAULT;
 	}
 
-	init(targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize = Config.VIEWPORT_SIZE_DEFAULT){
+	/**
+		@param {string} targetId - the dom element which you want it to generate FretboardAwesome.
+		@param {string} tuning - in what key we are tuning.
+		@param {number} length - how long should the fretboard be.
+		@param {string} notation - either "#" or "b".
+		@param {boolean} includeOpenFret - whether to include the first open fret.
+		@param {number} startGauge - at what thickness will the string start decreasing.
+		@param {string} orientation - either Config.ORI_VERTICAL or CONFIG_ORI_HORIZONTAL.
+		@param {number} viewport - limit how long the fretboard user can view in pixel unit.
+	*/
+	init(targetId,
+			tuning = MusicTheory.STANDARD_GUITAR_TUNING,
+			length = 15,
+			notation = "#",
+			includeOpenFret = false,
+			startGauge = 6,
+			orientation = Config.ORI_VERTICAL,
+			viewportSize = Config.VIEWPORT_SIZE_DEFAULT){
 		initUI.call(this, targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize);
 		this._updateTuningUI();
 		this.setViewportSize(viewportSize);
@@ -102,6 +120,9 @@ export class FretboardAwesome{
 		this._updateTuningUI();
 	}
 
+	/**
+		@private
+	*/
 	_updateTuningUI(){
 		let tuning = this._eleFretboard.getTuning();
 		this._uiTuningContainer.innerHTML = "";

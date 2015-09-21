@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>test</title>
+		<link rel="stylesheet" href="../lib/normalize.css">
+		<link rel="stylesheet" href="../css/fretboard-awesome.css">
+		<style>
+			html, body {
+				height: 100%;
+				text-align: center;
+			}
+
+			body {
+				padding: 50px;
+			}
+
+			.ver-fretboards {
+				display: block;
+			}
+
+			.ver-fretboards .container {
+				width: 30%;
+				display: inline-block;
+			}
+
+			.hor-fretboards {
+				display: block;
+			}
+
+			.hor-fretboards .container {
+				/*text-align: left;*/
+				margin: 50px 0 0 50px;
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ver-fretboards">
+			<div class="container"><div id="v1"></div></div>
+			<div class="container"><div id="v2"></div></div>
+			<div class="container"><div id="v3"></div></div>
+		</div>
+		<div class="hor-fretboards">
+			<div class="container"><div id="h1"></div></div>
+			<div class="container"><div id="h2"></div></div>
+			<div class="container"><div id="h3"></div></div>
+		</div>
+		<script src="../js/fretboard-awesome.js"></script>
+		<script>
+			var mark1 = [
+				{key: "E", color: "#CD8585"},
+				{key: "A", color: "white"},
+				{key: "D", color: "white"},
+				{key: "G", color: "white"}
+			];
+			var mark2 = [
+				{key: "C", color: "#3E7995"},
+				{key: "D", color: "white"},
+				{key: "E", color: "white"},
+				{key: "F", color: "white"},
+				{key: "G", color: "white"},
+				{key: "A", color: "white"},
+				{key: "B", color: "white"}
+			];
+			var inlays1 = [1,3,5,7];
+			var inlays2 = [3,5,7,9,12];
+
+			var v1 = new fa.FretboardAwesome().init("v1", ["A"], 8);
+			var v2 = new fa.FretboardAwesome().init("v2", ["E", "A", "D", "G"], 12, "#", true, 8);
+			v2.markInlays(inlays1);
+			v2.markKeys(mark1);
+			var v3 = new fa.FretboardAwesome().init("v3");
+			v3.setViewportSize(400); // 400px
+			v3.markInlays(inlays2);
+			v3.markKeys(mark2);
+
+			var h1 = new fa.FretboardAwesome().init("h1", ["Ab", "Bb", "Cb", "Db", "E#", "F#"], 8, "b");
+			h1.setOrientation(fa.Config.ORI_HORIZONTAL);
+			h1.markKeys(mark1);
+			var h2 = new fa.FretboardAwesome().init("h2", ["Ab", "Bb", "Cb", "E#", "F#"], 15, "#", false, 10);
+			h2.setOrientation(fa.Config.ORI_HORIZONTAL);
+			h2.setViewportSize(800);
+			h2.markKeys(mark2);
+			var h3 = new fa.FretboardAwesome().init("h3");
+			h3.setOrientation(fa.Config.ORI_HORIZONTAL);
+			h3.markInlays(inlays2);
+			h3.markKeys(mark1);
+		</script>
+	</body>
+</html>

@@ -1,3 +1,4 @@
+"use strict";
 // dependences
 var gulp = require("gulp");
 var gutil = require("gulp-util");
@@ -17,16 +18,22 @@ var sassPath = "src/sass";
 var sassFiles = "src/sass/**/*.scss";
 var sassMainFile = "src/sass/fretboard-awesome.scss";
 var compiledSassPath = "src/css";
+var cssBundleFilePath = "src/css/fretboard-awesome.css";
 
 var babelFiles = "src/babel/**/*.js";
-var babelMainFile = "src/babel/fretboard-awesome.js";
+var babelMainFile = "src/babel/Main.js";
 var compiledBabelPath = "src/js";
 var jsBundleFile = "fretboard-awesome.js";
 var jsBundleMinFile = "fretboard-awesome.min.js";
+var jsBundleMinFilePath = "src/js/fretboard-awesome.min.js";
 
 var testFiles = "src/test/**/*.js";
-var htmlFiles = "src/*.html"
+var htmlFiles = "src/**/*.html";
 
+var distPath = "dist/";
+
+// variables
+var version = "0.0.9";
 var debug = true;
 
 function errorHandler(err){
@@ -36,7 +43,7 @@ function errorHandler(err){
 }
 
 gulp.task("clean", function(){
-	return del([compiledSassPath, compiledBabelPath]);
+	return del([compiledSassPath, compiledBabelPath, distPath]);
 });
 
 gulp.task("compileSass", function(){
@@ -66,7 +73,7 @@ gulp.task("minifyJs", ["compileBabel"], function(){
 gulp.task("watch",  ["clean", "compileSass", "compileBabel"], function(){
 	browserSync.init({
 		server: "./"
-	})
+	});
 	gulp.watch(sassFiles, ["compileSass"]).on("change", browserSync.reload);
 	gulp.watch(babelFiles, ["compileBabel"]).on("change", browserSync.reload);
 	gulp.watch(htmlFiles, browserSync.reload);
@@ -74,3 +81,8 @@ gulp.task("watch",  ["clean", "compileSass", "compileBabel"], function(){
 })
 
 gulp.task("build", ["clean", "compileSass", "minifyJs"]);
+
+gulp.task("product", ["build"], function(){
+	return gulp.src([jsBundleMinFilePath, cssBundleFilePath])
+	.pipe(gulp.dest(distPath));
+});
