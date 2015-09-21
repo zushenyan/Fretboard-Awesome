@@ -53,6 +53,10 @@
 
 .fa-container {
 	@include display-flex(inline-flex);
+  // font-family: sans-serif, Helvetica, monospace;
+  // font-size: 16px !important;
+  // text-align: center !important;
+
 	&.vertical {
 		@include flex-flow(column nowrap);
 		.fa-tuning {
@@ -63,8 +67,6 @@
     .fa-viewport{
       height: $default-viewport-ver-size;
       width: auto;
-      // overflow-y: hidden;
-      // overflow-x: auto;
   		.fa-fretboard {
   			@include flex-flow(row nowrap);
   			.fa-string {
@@ -89,8 +91,6 @@
     .fa-viewport{
       height: auto;
       width: $default-viewport-hor-size;
-      // overflow-y: auto;
-      // overflow-x: hidden;
   		.fa-fretboard {
   			@include flex-flow(column-reverse nowrap);
   			.fa-string {
@@ -142,11 +142,11 @@
 
 .fa-string {
 	@include unstyle-list();
-	display: inline-flex;
+	@include display-flex(inline-flex);
 	background: transparent;
 
 	.fa-fret {
-    flex: 1 0 auto;
+    @include flex(1 0 auto);
 		&:after {
 			content: "";
 		}

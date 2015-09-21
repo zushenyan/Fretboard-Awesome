@@ -51,3 +51,11 @@
 	-webkit-flex-flow: $value;
 	flex-flow: $value;
 }
+
+@mixin flex($value: (0 1 auto)){
+	-moz-flex: $value;
+	-o-flex: $value;
+	-ms-flex: $value;
+	-webkit-flex: $value;
+	flex: $value;
+}
