@@ -5,26 +5,74 @@ export class FretboardAwesome{
 	constructor(){
 		this._domId = "";
 		this._uiTuningContainer = document.createElement("div");
+		this._uiViewportContainer = document.createElement("div");
 		this._uiMainContainer = null;
 		this._eleFretboard = null;
+
+		this._viewportSize = Config.VIEWPORT_SIZE_DEFAULT;
 	}
 
-	init(targeId, tuning, length, notation, includeStart, startGauge, orientation){
-		initUI.call(this, targeId, tuning, length, notation, includeStart, startGauge, orientation);
+	init(targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize = Config.VIEWPORT_SIZE_DEFAULT){
+		initUI.call(this, targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize);
 		this._updateTuningUI();
+		this.setViewportSize(viewportSize);
+		this.setOrientation(orientation);
 		return this;
 
-		function initUI(targetId, tuning, length, notation, includeStart, startGauge, orientation){
+		function initUI(targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize){
 			this._uiMainContainer = document.getElementById(targetId);
 
 			this._uiMainContainer.classList.add("fa-container");
 			this._uiTuningContainer.classList.add("fa-tuning");
-			this._eleFretboard = new EleFretboard().init(tuning, length, notation, includeStart, startGauge, orientation);
+			this._uiViewportContainer.classList.add("fa-viewport");
+			this._eleFretboard = new EleFretboard().init(tuning, length, notation, includeOpenFret, startGauge, orientation);
+
+			this._uiViewportContainer.appendChild(this._eleFretboard.getEle());
+			addDragEvent(this._uiViewportContainer);
 
 			this._uiMainContainer.appendChild(this._uiTuningContainer);
-			this._uiMainContainer.appendChild(this._eleFretboard.getEle());
+			this._uiMainContainer.appendChild(this._uiViewportContainer);
 
-			this.setOrientation(orientation);
+			function addDragEvent(ele){
+				let isDragging = false;
+				let previousX = 0;
+				let previousY = 0;
+
+				ele.addEventListener("mousedown", dragDown);
+				ele.addEventListener("mousemove", dragMove);
+				ele.addEventListener("mouseup", dragUp);
+				window.addEventListener("mouseup", dragUp);
+
+				ele.addEventListener("touchstart", dragDown);
+				ele.addEventListener("touchmove", dragMove);
+				ele.addEventListener("touchend", dragUp);
+
+				function dragDown(e){
+					e.preventDefault();
+					isDragging = true;
+					previousX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+					previousY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+				}
+
+				function dragMove(e){
+					e.preventDefault();
+					if(isDragging){
+						let newX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+						let newY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+						let offsetX = newX - previousX;
+						let offsetY = newY - previousY;
+						ele.scrollLeft -= offsetX;
+						ele.scrollTop -= offsetY;
+						previousX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+						previousY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+					}
+				}
+
+				function dragUp(e){
+					e.preventDefault();
+					isDragging = false;
+				}
+			}
 		}
 	}
 
@@ -32,9 +80,9 @@ export class FretboardAwesome{
 		@param {string} tune - in what key we are tuning.
 		@param {number} length - how long should the result be.
 		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeStart - whether to include the start key.
+		@param {boolean} includeOpenFret - whether to include the start key.
 	*/
-	setTuning(tuning = MusicTheory.STANDARD_GUITAR_TUNING, length = 12, notation = "#", includeStart = false){
+	setTuning(tuning = MusicTheory.STANDARD_GUITAR_TUNING, length = 12, notation = "#", includeOpenFret = false){
 		if(!(tuning instanceof Array)){
 			throw new TypeError("parameter tuning should be type of array: " + tuning);
 		}
@@ -44,13 +92,13 @@ export class FretboardAwesome{
 		if(!(notation === "#" || notation === "b")){
 			throw new TypeError("parameter notation should be either '#' or 'b': " + notation);
 		}
-		if(typeof includeStart !== "boolean"){
-			throw new TypeError("parameter includeStart should be type of boolean: " + includeStart);
+		if(typeof includeOpenFret !== "boolean"){
+			throw new TypeError("parameter includeOpenFret should be type of boolean: " + includeOpenFret);
 		}
 		if(!(typeof stringGauge !== "number") && stringGauge < 0){
 			throw new TypeError("parameter stringGauge should be a number which is greater than -1: " + stringGauge);
 		}
-		this._eleFretboard.setTuning(tuning, length, notation, includeStart);
+		this._eleFretboard.setTuning(tuning, length, notation, includeOpenFret);
 		this._updateTuningUI();
 	}
 
@@ -93,6 +141,7 @@ export class FretboardAwesome{
 		let className = orientation === Config.ORI_VERTICAL ? Config.ORI_VERTICAL : Config.ORI_HORIZONTAL;
 		this._uiMainContainer.classList.add(className);
 		this._eleFretboard.setOrientation(orientation);
+		this.setViewportSize(this.getViewportSize());
 	}
 
 	getOrientation(){
@@ -100,5 +149,29 @@ export class FretboardAwesome{
 							this._uiMainContainer.classList.contains("horizontal") ? Config.ORI_HORIZONTAL :
 							-1;
 		return ori;
+	}
+
+	setViewportSize(size){
+		if(typeof size !== "number" || size < 0){
+			throw new TypeError("parameter size should be typeof of number greater than 0: " + size);
+		}
+		let width = this._eleFretboard.getEle().scrollWidth;
+		let height = this._eleFretboard.getEle().scrollHeight;
+		if(this.getOrientation() === Config.ORI_VERTICAL){
+			height = (height <= size) ? "auto" : (size.toString() + "px");
+			width = "auto";
+		}
+		else if(this.getOrientation() === Config.ORI_HORIZONTAL){
+			height = "auto";
+			width = (width <= size) ? "auto" : (size.toString() + "px");
+		}
+		this._uiViewportContainer.style.width = width;
+		this._uiViewportContainer.style.height = height;
+		this._viewportSize = size;
+		return {width: width, height: height};
+	}
+
+	getViewportSize(){
+		return this._viewportSize;
 	}
 }

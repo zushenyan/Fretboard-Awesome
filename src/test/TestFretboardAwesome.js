@@ -11,6 +11,6 @@ var mark = [
 	{key: "Gb", color: "white"},
 ];
 
-var a = new fa.FretboardAwesome().init(target, tuning, length, notation, includeStart, gauge, fa.Config.ORI_HORIZONTAL);
+var a = new fa.FretboardAwesome().init(target, tuning, length, notation, includeStart, gauge, fa.Config.ORI_HORIZONTAL, 400);
 a.markInlays([3,5,7,9,12]);
 a.markKeys(mark);
