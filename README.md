@@ -3,6 +3,8 @@ Fretboard Awesome is a plugable web widget with user customizations.
 
 Supports all the latest browsers and iOS.
 
+[Press me to see the demo](http://zushenyan.github.io/Fretboard-Awesome/).
+
 **Still in early development phase, specification may change anytime.**
 
 ### Thanks to These Tools
