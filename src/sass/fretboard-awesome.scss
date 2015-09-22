@@ -53,9 +53,9 @@
 
 .fa-container {
 	@include display-flex(inline-flex);
-  // font-family: sans-serif, Helvetica, monospace;
-  // font-size: 16px !important;
-  // text-align: center !important;
+  font-family: sans-serif, Helvetica, monospace !important;
+  font-size: 16px !important;
+  text-align: center !important;
 
 	&.vertical {
 		@include flex-flow(column nowrap);
