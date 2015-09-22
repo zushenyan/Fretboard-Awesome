@@ -7,40 +7,121 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link rel="stylesheet" href="lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/fretboard-awesome-0.0.9/fretboard-awesome.css">
+    <style>
+      .my-margin {
+        margin: 30px 0 0 0;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand">Fretboard Awesome</a>
+          <a href="https://github.com/zushenyan/Fretboard-Awesome" class="navbar-brand">Fretboard Awesome</a>
         </div>
       </div>
     </nav>
 
     <main class="container">
-      <div class="row">
-        <div class="col-md-8"><div id="v1"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center">
+        <div class="col-md-12"><div id="v1"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var v1 = new fa.FretboardAwesome().init("v1", ["A"], 8);
+          </pre>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-8"><div id="v2"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center my-margin">
+        <div class="col-md-12"><div id="v2"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var mark1 = [
+  {key: "E", color: "#CD8585"},
+  {key: "A", color: "white"},
+  {key: "D", color: "white"},
+  {key: "G", color: "white"}
+];
+var inlays1 = [1,3,5,7];
+var v2 = new fa.FretboardAwesome().init("v2", ["E", "A", "D", "G"], 12, "#", true, 8);
+v2.markInlays(inlays1);
+v2.markKeys(mark1);
+          </pre>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-8"><div id="v3"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center my-margin">
+        <div class="col-md-12"><div id="v3"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var mark2 = [
+  {key: "C", color: "#3E7995"},
+  {key: "D", color: "white"},
+  {key: "E", color: "white"},
+  {key: "F", color: "white"},
+  {key: "G", color: "white"},
+  {key: "A", color: "white"},
+  {key: "B", color: "white"}
+];
+var inlays2 = [3,5,7,9,12];
+var v3 = new fa.FretboardAwesome().init("v3");
+v3.setViewportSize(400); // scrollable
+v3.markInlays(inlays2);
+v3.markKeys(mark2);
+          </pre>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-8"><div id="h1"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center my-margin">
+        <div class="col-md-12"><div id="h1"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var mark1 = [
+  {key: "E", color: "#CD8585"},
+  {key: "A", color: "white"},
+  {key: "D", color: "white"},
+  {key: "G", color: "white"}
+];
+var h1 = new fa.FretboardAwesome().init("h1", ["Ab", "Bb", "Cb", "Db", "E#", "F#"], 8, "b");
+h1.setOrientation(fa.Config.ORI_HORIZONTAL);
+h1.markKeys(mark1);
+          </pre>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-8"><div id="h2"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center my-margin">
+        <div class="col-md-12"><div id="h2"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var mark2 = [
+	{key: "C", color: "#3E7995"},
+	{key: "D", color: "white"},
+	{key: "E", color: "white"},
+	{key: "F", color: "white"},
+	{key: "G", color: "white"},
+	{key: "A", color: "white"},
+	{key: "B", color: "white"}
+];
+var h2 = new fa.FretboardAwesome().init("h2", ["Ab", "Bb", "Cb", "E#", "F#"], 15, "#", false, 10);
+h2.setOrientation(fa.Config.ORI_HORIZONTAL);
+h2.setViewportSize(800);
+h2.markKeys(mark2);
+          </pre>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-8"><div id="h3"></div></div>
-        <div class="col-md-4"></div>
+      <div class="row text-center my-margin">
+        <div class="col-md-12"><div id="h3"></div></div>
+        <div class="col-md-12 text-left my-margin">
+          <pre>
+var mark1 = [
+  {key: "E", color: "#CD8585"},
+  {key: "A", color: "white"},
+  {key: "D", color: "white"},
+  {key: "G", color: "white"}
+];
+var inlays2 = [3,5,7,9,12];
+var h3 = new fa.FretboardAwesome().init("h3");
+h3.setOrientation(fa.Config.ORI_HORIZONTAL);
+h3.markInlays(inlays2);
+h3.markKeys(mark1);
+          </pre>
+        </div>
       </div>
     </main>
 
