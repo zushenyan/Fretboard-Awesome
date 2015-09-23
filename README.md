@@ -1,4 +1,4 @@
-# Fretboard-Awesome
+# Fretboard Awesome
 Fretboard Awesome is a plugable web widget with user customizations.
 
 Supports all the latest browsers and iOS.
@@ -9,7 +9,7 @@ Supports all the latest browsers and iOS.
 
 ### To Do
 ###### Refactoring
-Currently the structure is a mess, simply because I write it in a rush. If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.
+Currently the structure is a mess, simply because I wrote it in a rush. If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.
 ###### Better Access Way for the Dummies
 My original purpose on init and setting shuold be more comfortable, dummy-friendly:
 ```JavaScript
