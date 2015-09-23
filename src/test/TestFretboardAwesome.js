@@ -4,6 +4,7 @@ var length = 15;
 var notation = "#";
 var includeStart = false;
 var gauge = 6;
+var inlays = [3,5,7,9,12];
 
 var mark = [
 	{key: "Cb", color: "aqua"},
@@ -12,5 +13,8 @@ var mark = [
 ];
 
 var a = new fa.FretboardAwesome().init(target, tuning, length, notation, includeStart, gauge, fa.Config.ORI_HORIZONTAL, 400);
-a.markInlays([3,5,7,9,12]);
+a.markInlays(inlays);
 a.markKeys(mark);
+
+a.setTuning(["E", "D", "G", "B", "E"], length);
+a.markInlays(inlays);

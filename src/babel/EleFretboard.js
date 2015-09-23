@@ -140,8 +140,10 @@ export class EleFretboard extends AbstractFretboard{
 	}
 
 	markInlays(arr){
-		let mid = this._eleStrings.length / 2 - 1;
-		mid = mid < 0 ? 0 : mid;
+		let length = this._eleStrings.length;
+		let mid = Math.round(length / 2 - 1);
+		mid = mid < 0 ? 0 :
+					mid > length ? length : mid;
 		return this._eleStrings[mid].markInlays(arr);
 	}
 }
