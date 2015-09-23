@@ -3,9 +3,34 @@ Fretboard Awesome is a plugable web widget with user customizations.
 
 Supports all the latest browsers and iOS.
 
-[Press me to see the demo](http://zushenyan.github.io/Fretboard-Awesome/).
+[Behold the awesomeness!](http://zushenyan.github.io/Fretboard-Awesome/)
 
 **Still in early development phase, specification may change anytime.**
+
+### To Do
+###### Refactoring
+Currently the structure is a mess, simply because I write it in a rush. If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.
+###### Better Access Way for the Dummies
+My original purpose on init and setting shuold be more comfortable, dummy-friendly:
+```JavaScript
+var fretboard = new fa.FretboardAwesome().init(targetId, {
+	orientation: "vertical",
+	fretboardLength: 15,
+	...
+});
+```
+Pass a config in `Object` format. Doesn't need tons of setters like `setOrientation("vertical")` or `setFretboardLength(15)` anymore to do the annoying job.
+```JavaScript
+fretboard.set({
+	viewportSize: 400,
+	tunning: ["E", "A", "D", "G"]
+	...
+});
+
+var config = fretboard.get(["viewportSize", "tunning"]);
+```
+###### Customize Everything(almost)
+You should be able to customize almost everything including fretboard background, inlays' style, the frets' size ,and even write a plugin component for Fretboard Awesome!
 
 ### Thanks to These Tools
 * JavaScript
