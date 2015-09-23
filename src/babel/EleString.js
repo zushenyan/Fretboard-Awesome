@@ -58,8 +58,8 @@ export class EleString{
 				this._eleNotes.push(result);
 				this._uiString.appendChild(result.getEle());
 			}
-			this._tuning = MusicTheory.convertAccidental(tuning, notation);
 		}
+		this._tuning = MusicTheory.convertAccidental(tuning, notation);
 	}
 
 	getTuning(){
