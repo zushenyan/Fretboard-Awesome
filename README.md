@@ -29,7 +29,7 @@ fretboard.set({
 
 var config = fretboard.get(["viewportSize", "tunning"]);
 ```
-###### Customize Everything(almost)
+###### Customize (almost) Everything
 You should be able to customize almost everything including fretboard background, inlays' style, the frets' size ,and even write a plugin component for Fretboard Awesome!
 
 ### Thanks to These Tools
