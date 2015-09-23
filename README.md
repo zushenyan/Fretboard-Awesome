@@ -15,6 +15,7 @@ Supports all the latest browsers and iOS.
   * Normalize.css
 * npm
 * gulp
+* browserify
 
 ### Getting Start
 1. Copy files in `dist` directory to your project
