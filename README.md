@@ -49,15 +49,15 @@ You should be able to customize almost everything including fretboard background
 
 ### Getting Start
 1. Copy files in `dist` directory to your project
-2. In your HTML, plug `FretboardAwesome-0.1.0.css` and `FretboardAesome-0.1.0.min.js`:
+2. In your HTML, insert `FretboardAwesome-0.1.0.css` and `FretboardAesome-0.1.0.min.js`:
 ```html
 <html>
     <head>
-        <link rel="stylesheet" href="FretboardAwesome-0.1.0.css">
+        <link rel="stylesheet" href="css/FretboardAwesome-0.1.0.css">
     </head>
     <body>
         ...
-        <script src="FretboardAesome-0.1.0.min.js"></script>
+        <script src="js/FretboardAesome-0.1.0.min.js"></script>
     </body>
 </html>
 ```
