@@ -85,8 +85,8 @@ var fretboard = new fa.FretboardAwesome().init("fa");
 		Default is no limit.
 	*/
 var f = new fa.FreboardAwesome().init(
-  targetId = "my-fa",
-  tuning = ["E", "A", "D", "G"],
+	targetId = "my-fa",
+ 	tuning = ["E", "A", "D", "G"],
 	notation = "b",
 	fretboardLength = 15,
 	stringStartGauge = 8,
@@ -96,7 +96,7 @@ var f = new fa.FreboardAwesome().init(
 
 * setTuning(tuning)
 ```javascript
-  /**
+	/**
 		@param {string} tune - in what key we are tuning.
 	*/
 	fretboard.setTuning(["E", "A", "C#", "Db"])
@@ -120,20 +120,20 @@ var f = new fa.FreboardAwesome().init(
 
 * setStringStartGauge(gauge)
 ```javascript
-  fretboard.setStringStartGauge(6);
+	fretboard.setStringStartGauge(6);
 ```
 
 * setOrientation(orientation)
 ```javascript
-  // What direction your fretboard display in.
-  fretboard.setOrientation(fa.Config.ORI_HORIZONTAL);
+	// What direction your fretboard display in.
+	fretboard.setOrientation(fa.Config.ORI_HORIZONTAL);
 ```
 
 * setViewportSize(size)
 ```javascript
-  // Specifiy the limit of how many frets user can view in pixel unit.
-  // Set 999999 to make it unlimited!
-  fretboard.setViewportSize(400);
+	// Specifiy the limit of how many frets user can view in pixel unit.
+	// Set 999999 to make it unlimited!
+	fretboard.setViewportSize(400);
 ```
 
 * markKeys(targets)
@@ -151,8 +151,8 @@ var f = new fa.FreboardAwesome().init(
 
 * markInlays(inlays)
 ```javascript
-  // Inlays are the little dots on guitar fret 3,5,7,9,12...
-  fretboard.markInlays([3,5,7]);
+	// Inlays are the little dots on guitar fret 3,5,7,9,12...
+	fretboard.markInlays([3,5,7]);
 ```
 
 ### Author & Licence
