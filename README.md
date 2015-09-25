@@ -72,7 +72,7 @@ var fretboard = new fa.FretboardAwesome().init("fa");
 5. Hooray! Now dance with your awesome fretboard!
 
 ### Docs
-* `init(targetId, ...)`
+* init(targetId, ...)
 ```javascript
     /**
 		@param {string} targetId - the dom element which you want it to generate FretboardAwesome.
@@ -94,7 +94,7 @@ var f = new fa.FreboardAwesome().init(
 	viewportSize = 400);
 ```
 
-* `setTuning(...)`
+* setTuning(tuning)
 ```javascript
   /**
 		@param {string} tune - in what key we are tuning.
@@ -102,7 +102,7 @@ var f = new fa.FreboardAwesome().init(
 	fretboard.setTuning(["E", "A", "C#", "Db"])
 ```
 
-* `setNotation(...)`
+* setNotation(notation)
 ```javascript
 	/**
 		@param {string} notation - in either "#" or "b".
@@ -110,7 +110,7 @@ var f = new fa.FreboardAwesome().init(
 	fretboard.setNotation("#");
 ```
 
-* `setFretboardLength(...)`
+* setFretboardLength(length)
 ```javascript
 	/**
 		@param {number} length - how long should the fretboard be.
@@ -118,25 +118,25 @@ var f = new fa.FreboardAwesome().init(
 	fretboard.setFretboardLength(12);
 ```
 
-* `setStringStartGauge(gauge)`
+* setStringStartGauge(gauge)
 ```javascript
   fretboard.setStringStartGauge(6);
 ```
 
-* `setOrientation(orientation)`
+* setOrientation(orientation)
 ```javascript
   // What direction your fretboard display in.
   fretboard.setOrientation(fa.Config.ORI_HORIZONTAL);
 ```
 
-* `setViewportSize(size)`
+* setViewportSize(size)
 ```javascript
   // Specifiy the limit of how many frets user can view in pixel unit.
   // Set 999999 to make it unlimited!
   fretboard.setViewportSize(400);
 ```
 
-* `markKeys(targets)`
+* markKeys(targets)
 ```javascript
 	var mark1 = [
 		{key: "E", color: "#CD8585"},
@@ -149,7 +149,7 @@ var f = new fa.FreboardAwesome().init(
 	fretboard.markKeys(mark1);
 ```
 
-* `markInlays(inlays)`
+* markInlays(inlays)
 ```javascript
   // Inlays are the little dots on guitar fret 3,5,7,9,12...
   fretboard.markInlays([3,5,7]);
