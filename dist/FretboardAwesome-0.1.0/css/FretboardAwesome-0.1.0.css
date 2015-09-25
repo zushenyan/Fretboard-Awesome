@@ -181,9 +181,6 @@
   z-index: 0; }
 
 .fa-string {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
   display: -moz-inline-flex;
   display: -o-inline-flex;
   display: -ms-inline-flex;
@@ -235,4 +232,4 @@
     transform: translateY(-50%);
     display: block; }
 
-/*# sourceMappingURL=fretboard-awesome.css.map */
+/*# sourceMappingURL=FretboardAwesome-0.1.0.css.map */

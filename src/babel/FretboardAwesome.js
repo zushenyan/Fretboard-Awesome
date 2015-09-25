@@ -2,50 +2,51 @@ import {EleFretboard} from "./EleFretboard";
 import {Config} from "./Config";
 import {MusicTheory} from "./MusicTheory";
 
-export class FretboardAwesome{
+export class FretboardAwesome extends EleFretboard{
 	constructor(){
+		super();
 		this._domId = "";
+		this._viewportSize = Config.VIEWPORT_SIZE_DEFAULT;
+
 		this._uiTuningContainer = document.createElement("div");
 		this._uiViewportContainer = document.createElement("div");
 		this._uiMainContainer = null;
-		this._eleFretboard = null;
-
-		this._viewportSize = Config.VIEWPORT_SIZE_DEFAULT;
 	}
 
 	/**
+		@override
 		@param {string} targetId - the dom element which you want it to generate FretboardAwesome.
 		@param {string} tuning - in what key we are tuning.
-		@param {number} length - how long should the fretboard be.
 		@param {string} notation - either "#" or "b".
-		@param {boolean} includeOpenFret - whether to include the first open fret.
-		@param {number} startGauge - at what thickness will the string start decreasing.
+		@param {number} fretboardLength - how long should the fretboard be.
+		@param {number} stringStartGauge - at what thickness will the string start decreasing.
 		@param {string} orientation - either Config.ORI_VERTICAL or CONFIG_ORI_HORIZONTAL.
 		@param {number} viewport - limit how long the fretboard user can view in pixel unit.
 	*/
-	init(targetId,
-			tuning = MusicTheory.STANDARD_GUITAR_TUNING,
-			length = 15,
-			notation = "#",
-			includeOpenFret = false,
-			startGauge = 6,
-			orientation = Config.ORI_VERTICAL,
-			viewportSize = Config.VIEWPORT_SIZE_DEFAULT){
-		initUI.call(this, targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize);
+	init(
+		targetId,
+		tuning = this.getTuning(),
+		notation = this.getNotation(),
+		fretboardLength = this.getFretboardLength(),
+		stringStartGauge = this.getStringStartGauge(),
+		orientation = this.getOrientation(),
+		viewportSize = this.getViewportSize()){
+
+		initUI.call(this, targetId);
+		super.init(tuning, notation, fretboardLength, stringStartGauge, orientation);
 		this._updateTuningUI();
 		this.setViewportSize(viewportSize);
 		this.setOrientation(orientation);
 		return this;
 
-		function initUI(targetId, tuning, length, notation, includeOpenFret, startGauge, orientation, viewportSize){
+		function initUI(targetId){
 			this._uiMainContainer = document.getElementById(targetId);
 
 			this._uiMainContainer.classList.add("fa-container");
 			this._uiTuningContainer.classList.add("fa-tuning");
 			this._uiViewportContainer.classList.add("fa-viewport");
-			this._eleFretboard = new EleFretboard().init(tuning, length, notation, includeOpenFret, startGauge, orientation);
 
-			this._uiViewportContainer.appendChild(this._eleFretboard.getEle());
+			this._uiViewportContainer.appendChild(this.getEle());
 			addDragEvent(this._uiViewportContainer);
 
 			this._uiMainContainer.appendChild(this._uiTuningContainer);
@@ -95,36 +96,26 @@ export class FretboardAwesome{
 	}
 
 	/**
-		@param {string} tune - in what key we are tuning.
-		@param {number} length - how long should the result be.
-		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeOpenFret - whether to include the start key.
+		@override
 	*/
-	setTuning(tuning = MusicTheory.STANDARD_GUITAR_TUNING, length = 12, notation = "#", includeOpenFret = false){
-		if(!(tuning instanceof Array)){
-			throw new TypeError("parameter tuning should be type of array: " + tuning);
-		}
-		if(!(typeof length !== "number") && length < 1){
-			throw new TypeError("parameter length should be a number which is greater than 0: " + length);
-		}
-		if(!(notation === "#" || notation === "b")){
-			throw new TypeError("parameter notation should be either '#' or 'b': " + notation);
-		}
-		if(typeof includeOpenFret !== "boolean"){
-			throw new TypeError("parameter includeOpenFret should be type of boolean: " + includeOpenFret);
-		}
-		if(!(typeof stringGauge !== "number") && stringGauge < 0){
-			throw new TypeError("parameter stringGauge should be a number which is greater than -1: " + stringGauge);
-		}
-		this._eleFretboard.setTuning(tuning, length, notation, includeOpenFret);
+	setTuning(tuning){
+		super.setTuning(tuning);
 		this._updateTuningUI();
+	}
+
+	/**
+		@override
+	*/
+	setFretboardLength(length){
+		super.setFretboardLength(length);
+		this.setViewportSize(this.getViewportSize());
 	}
 
 	/**
 		@private
 	*/
 	_updateTuningUI(){
-		let tuning = this._eleFretboard.getTuning();
+		let tuning = this.getTuning();
 		this._uiTuningContainer.innerHTML = "";
 		for(let i = 0; i < tuning.length; i++){
 			let wrapperDiv = document.createElement("div");
@@ -137,47 +128,27 @@ export class FretboardAwesome{
 		}
 	}
 
-	markKeys(target){
-		return this._eleFretboard.markKeys(target);
-	}
-
-	setStringGauge(gauge){
-		this._eleFretboard.setStringGauge(gauge);
-	}
-
-	getCurrentNotation(){
-		return this._eleFretboard.getCurrentNotation();
-	}
-
-	markInlays(arr){
-		return this._eleFretboard.markInlays(arr);
-	}
-
+	/**
+		@override
+	*/
 	setOrientation(orientation){
 		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
 			throw new TypeError("parameter orientation should be either FretboardAwesome.ORI_VERTICAL or FretboardAwesome.ORI_HORIZONTAL: " + orientation);
 		}
+		let className = (orientation === Config.ORI_VERTICAL ? Config.ORI_VERTICAL : Config.ORI_HORIZONTAL);
 		this._uiMainContainer.classList.remove(Config.ORI_VERTICAL);
 		this._uiMainContainer.classList.remove(Config.ORI_HORIZONTAL);
-		let className = orientation === Config.ORI_VERTICAL ? Config.ORI_VERTICAL : Config.ORI_HORIZONTAL;
 		this._uiMainContainer.classList.add(className);
-		this._eleFretboard.setOrientation(orientation);
+		super.setOrientation(orientation);
 		this.setViewportSize(this.getViewportSize());
-	}
-
-	getOrientation(){
-		let ori = this._uiMainContainer.classList.contains("vertical") ? Config.ORI_VERTICAL :
-							this._uiMainContainer.classList.contains("horizontal") ? Config.ORI_HORIZONTAL :
-							-1;
-		return ori;
 	}
 
 	setViewportSize(size){
 		if(typeof size !== "number" || size < 0){
 			throw new TypeError("parameter size should be typeof of number greater than 0: " + size);
 		}
-		let width = this._eleFretboard.getEle().scrollWidth;
-		let height = this._eleFretboard.getEle().scrollHeight;
+		let width = this.getEle().scrollWidth;
+		let height = this.getEle().scrollHeight;
 		if(this.getOrientation() === Config.ORI_VERTICAL){
 			height = (height <= size) ? "auto" : (size.toString() + "px");
 			width = "auto";
@@ -192,7 +163,5 @@ export class FretboardAwesome{
 		return {width: width, height: height};
 	}
 
-	getViewportSize(){
-		return this._viewportSize;
-	}
+	getViewportSize(){ return this._viewportSize; }
 }

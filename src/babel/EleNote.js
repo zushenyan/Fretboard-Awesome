@@ -5,10 +5,13 @@ export class EleNote extends Note{
 	constructor(){
 		super();
 
-		this._uiNote = document.createElement("li");
+		this._stringGauge = 12;
+		this._orientation = Config.ORI_VERTICAL;
+
+		this._uiNote = document.createElement("div");
 		this._uiString = document.createElement("div");
 		this._uiNoteTextContainer = document.createElement("div");
-		this._uiNoteText = document.createElement("span");
+		this._uiNoteText = document.createElement("div");
 
 		this._uiNoteTextContainer.classList.add("fa-note");
 		this._uiNoteText.classList.add("fa-note-text");
@@ -18,56 +21,76 @@ export class EleNote extends Note{
 		this._uiNoteTextContainer.appendChild(this._uiNoteText);
 		this._uiNote.appendChild(this._uiString);
 		this._uiNote.appendChild(this._uiNoteTextContainer);
-
-		this._stringGauge = 3;
-		this._orientation = Config.ORI_VERTICAL;
 	}
 
 	/**
 		@param {string} note - format "d#", "E", "G#".
 		@param {string} notation - either be "#" or "b".
 		@param {string} bgColor - color format in string.
-		@param {number} stringGauge - how thick the string will be displayed, unit in px.
+		@param {number} gauge - how thick the string will be displayed, unit in px.
 		@param {number} orientation - which orientation the string will be displayed. Should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL;
 	*/
-	init(note, notation = "#", bgColor = "white", stringGauge = 12, orientation = Config.ORI_VERTICAL){
+	init(
+		note = this.getNoteName(),
+		notation = this.getNotetation(),
+		bgColor = this.getBgColor(),
+		gauge = this.getStringGauge(),
+		orientation = this.getOrientation()){
+			
 		super.init(note, notation);
 		this.setNoteName(note, notation);
 		this.setBgColor(bgColor);
-		this.setStringGauge(stringGauge);
+		this.setStringGauge(gauge);
 		this.setOrientation(orientation);
 		this.hide();
 		return this;
 	}
 
-	getEle(){
-		return this._uiNote;
-	}
+	getEle(){ return this._uiNote; }
 
-	setNoteName(noteName, notation){
-		if(typeof noteName === "string" || noteName instanceof String || notation === "#" || notation == "b"){
-			super.setNoteName(noteName, notation);
-			this._uiNoteText.innerHTML = "";
-			this._uiNoteText.appendChild(document.createTextNode(this.getNoteName()));
-		}
-		else {
+	/**
+		@override
+	*/
+	setNoteName(noteName){
+		if(!(typeof noteName === "string" || noteName instanceof String)){
 			throw new TypeError("parameter noteName should be type of string: " + noteName);
 		}
+		super.setNoteName(noteName);
+		this._uiNoteText.innerHTML = "";
+		this._uiNoteText.appendChild(document.createTextNode(this.getNoteName()));
 	}
 
-	setBgColor(bgColor){
-		if(typeof bgColor === "string" || bgColor instanceof String){
-			this._uiNoteTextContainer.style.backgroundColor = bgColor;
+	/**
+		@param {string} notation - either be "#" or "b".
+	*/
+	setNotation(notation){
+		if(!(typeof notation === "string" || notation instanceof String)){
+			throw new TypeError("parameter notation should be typef of string: " + notation);
 		}
-		else {
+		if(!(notation === "#" || notation === "b")){
+			throw new TypeError("parameter notation should be either '#' or 'b': " + notation);
+		}
+		super.setNotation(notation);
+		this.setNoteName(this.getNoteName());
+	}
+
+	/**
+		@param {string} bgColor - color format in string.
+	*/
+	setBgColor(bgColor){
+		if(!(typeof bgColor === "string" || bgColor instanceof String)){
 			throw new TypeError("parameter bgColor should be type of string: " + bgColor);
 		}
+		this._uiNoteTextContainer.style.backgroundColor = bgColor;
 	}
 
 	getBgColor(){
 		return this._uiNoteTextContainer.style.backgroundColor;
 	}
 
+	/**
+		@param {number} gauge - how thick the string will be displayed, unit in px.
+	*/
 	setStringGauge(gauge){
 		if(typeof gauge !== "number" || gauge < 0){
 			throw new TypeError("parameter gauge should be greater than 0:" + gauge);
@@ -90,6 +113,9 @@ export class EleNote extends Note{
 		return this._stringGauge;
 	}
 
+	/**
+		@param {number} orientation - which orientation the string will be displayed. Should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL;
+	*/
 	setOrientation(orientation){
 		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
 			throw new TypeError("parameter orientation should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL: " + orientation);

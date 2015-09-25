@@ -141,7 +141,6 @@
 }
 
 .fa-string {
-	@include unstyle-list();
 	@include display-flex(inline-flex);
 	background: transparent;
 

@@ -1,6 +1,6 @@
 export class MusicTheory {
 	/**
-		@param {string} note - accept a string in specified notation, see normalize() for more info.
+		@param {string, array} note - accept a string in specified notation, see normalize() for more info.
 		@param {string} convertTo - should either be "#" or "b" in string type.
 		@return {string} - will return the query result.
 	*/

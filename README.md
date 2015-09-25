@@ -7,6 +7,11 @@ Supports all the latest browsers and iOS.
 
 **Still in early development phase, specification may change anytime.**
 
+### Change log
+* v0.1.0
+	* Make structure more make sense.
+	* Remove includeOpenFret option. It's really confusing to people, including myself.
+
 ### To Do
 ###### Refactoring
 Currently the structure is a mess, simply because I wrote it in a rush. If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.
@@ -44,15 +49,15 @@ You should be able to customize almost everything including fretboard background
 
 ### Getting Start
 1. Copy files in `dist` directory to your project
-2. In your HTML, plug `fretboard-awesome-css` and `fretboard-awesome.min.js`:
+2. In your HTML, plug `FretboardAwesome-0.1.0.css` and `FretboardAesome-0.1.0.min.js`:
 ```html
 <html>
     <head>
-        <link rel="stylesheet" href="fretboard-awesome.css">
+        <link rel="stylesheet" href="FretboardAwesome-0.1.0.css">
     </head>
     <body>
         ...
-        <script src="fretboard-awesome.min.js"></script>
+        <script src="FretboardAesome-0.1.0.min.js"></script>
     </body>
 </html>
 ```
@@ -72,44 +77,68 @@ var fretboard = new fa.FretboardAwesome().init("fa");
     /**
 		@param {string} targetId - the dom element which you want it to generate FretboardAwesome.
 		@param {string} tuning - in what key we are tuning.
-		@param {number} length - how long should the fretboard be.
 		@param {string} notation - either "#" or "b".
-		@param {boolean} includeOpenFret - whether to include the first open fret.
-		@param {number} startGauge - at what thickness will the string start decreasing.
+		@param {number} fretboardLength - how long should the fretboard be.
+		@param {number} stringStartGauge - at what thickness will the string start decreasing.
 		@param {string} orientation - either Config.ORI_VERTICAL or CONFIG_ORI_HORIZONTAL.
 		@param {number} viewport - limit how long the fretboard user can view in pixel unit.
 		Default is no limit.
 	*/
 var f = new fa.FreboardAwesome().init(
-    targetId,
-    tuning = MusicTheory.STANDARD_GUITAR_TUNING,
-	length = 15,
-	notation = "#",
-	includeOpenFret = false,
-	startGauge = 6,
-	orientation = Config.ORI_VERTICAL,
-	viewportSize = Config.VIEWPORT_SIZE_DEFAULT
-    );
+  targetId = "my-fa",
+  tuning = ["E", "A", "D", "G"],
+	notation = "b",
+	fretboardLength = 15,
+	stringStartGauge = 8,
+	orientation = fa.Config.ORI_VERTICAL,
+	viewportSize = 400);
 ```
 
 * `setTuning(...)`
 ```javascript
-    /**
+  /**
 		@param {string} tune - in what key we are tuning.
-		@param {number} length - how long should the fretboard be.
-		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeOpenFret - whether to include the open fret.
 	*/
-	fretboard.setTuning(
-	    tuning = MusicTheory.STANDARD_GUITAR_TUNING,
-	    length = 12,
-	    notation = "#",
-	    includeOpenFret = false)
+	fretboard.setTuning(["E", "A", "C#", "Db"])
+```
+
+* `setNotation(...)`
+```javascript
+	/**
+		@param {string} notation - in either "#" or "b".
+	*/
+	fretboard.setNotation("#");
+```
+
+* `setFretboardLength(...)`
+```javascript
+	/**
+		@param {number} length - how long should the fretboard be.
+	*/
+	fretboard.setFretboardLength(12);
+```
+
+* `setStringStartGauge(gauge)`
+```javascript
+  fretboard.setStringStartGauge(6);
+```
+
+* `setOrientation(orientation)`
+```javascript
+  // What direction your fretboard display in.
+  fretboard.setOrientation(fa.Config.ORI_HORIZONTAL);
+```
+
+* `setViewportSize(size)`
+```javascript
+  // Specifiy the limit of how many frets user can view in pixel unit.
+  // Set 999999 to make it unlimited!
+  fretboard.setViewportSize(400);
 ```
 
 * `markKeys(targets)`
 ```javascript
-    var mark1 = [
+	var mark1 = [
 		{key: "E", color: "#CD8585"},
 		{key: "A", color: "white"},
 		{key: "D", color: "white"},
@@ -120,28 +149,10 @@ var f = new fa.FreboardAwesome().init(
 	fretboard.markKeys(mark1);
 ```
 
-* `setStringGauge(gauge)`
-```javascript
-    fretboard.setStringGauge(6);
-```
-
 * `markInlays(inlays)`
 ```javascript
-    // Inlays are the little dots on guitar fret 3,5,7,9,12...
-    fretboard.markInlays([3,5,7]);
-```
-
-* `setOrientation(orientation)`
-```javascript
-    // What direction your fretboard display in.
-    fretboard.setOrientation(fa.Config.ORI_HORIZONTAL);
-```
-
-* `setViewportSize(size)`
-```javascript
-    // Specifiy the limit of how many frets user can view in pixel unit.
-    // Set 999999 to make it unlimited!
-    fretboard.setViewportSize(400);
+  // Inlays are the little dots on guitar fret 3,5,7,9,12...
+  fretboard.markInlays([3,5,7]);
 ```
 
 ### Author & Licence

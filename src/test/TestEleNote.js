@@ -1,7 +1,8 @@
 var a;
 a = new fa.EleNote().init("Ab", "#", "white", 3, fa.Config.ORI_VERTICAL);
 
-a.setNoteName("B#", "b");
+a.setNoteName("d#");
+a.setNotation("b");
 a.hide();
 a.setBgColor("#eeeeee");
 a.setStringGauge(5, fa.Config.ORI_HORIZONTAL);
@@ -21,5 +22,6 @@ console.log(a.getEle().outerHTML);
 a.setStringGauge(15);
 a.setOrientation(fa.Config.ORI_HORIZONTAL);
 console.log(a.getEle().outerHTML);
-a.setNoteName("Fb", "#");
+a.setNoteName("Fb");
+a.setNotation("#");
 console.log(a);

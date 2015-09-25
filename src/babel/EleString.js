@@ -4,68 +4,99 @@ import {Config} from "./Config";
 
 export class EleString{
 	constructor(){
-		this._uiString = document.createElement("ul");
-		this._eleNotes = []; // array of EleNote
-		this._tuning = "";
-		this._stringGauge = 0;
+		this._tune = "A";
+		this._notation = "#";
+		this._stringLength = 12;
+		this._stringGauge = 6;
 		this._orientation = Config.ORI_VERTICAL;
-	}
+		this._markKeys = [];
+		this._markInlays = [];
 
-	init(tuning, length = 12, notation = "#", includeOpenFret = false, stringGauge = 6, orientation = Config.ORI_VERTICAL){
-		initUI.call(this);
-		this.setTuning(tuning, length, notation, includeOpenFret);
-		this.setOrientation(orientation);
-		this.setStringGauge(stringGauge);
-		return this;
-
-		function initUI(){
-			this._uiString.classList.add("fa-string");
-		}
+		this._eleNotes = []; // array of EleNote
+		this._uiString = document.createElement("div");
+		this._uiString.classList.add("fa-string");
 	}
 
 	/**
-		@param {string} tuning - in what key we are tuning.
-		@param {number} length - how long should the fretboard be.
-		@param {string} notation - in either "#" or "b".
-		@param {boolean} includeOpenFret - whether to include the start key.
+		@param {string} tune - format "d#", "E", "G#".
+		@param {string} notation - either be "#" or "b".
+		@param {number} stringLength - how long should the fretboard be.
+		@param {number} gauge - how thick the string will be displayed, unit in px.
+		@param {number} orientation - which orientation the string will be displayed. Should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL;
 	*/
-	setTuning(tuning, length, notation = "#", includeOpenFret = false){
-		if(!(typeof tuning === "string" || tuning instanceof String)){
-			throw new TypeError("parameter tuning should be string: " + tuning);
+	init(
+		tune = this.getTune(),
+		notation = this.getNotation(),
+		stringLength = this.getStringLength(),
+		stringGauge = this.getStringGauge(),
+		orientation = this.getOrientation()){
+
+		this.setTune(tune);
+		this.setNotation(notation);
+		this.setStringLength(stringLength);
+		this.setStringGauge(stringGauge);
+		this.setOrientation(orientation);
+		return this;
+	}
+
+	_recreateNotes(){
+		let notes = MusicTheory.tuning(this.getTune(), this.getStringLength() + 1, this.getNotation(), false);
+		this._uiString.innerHTML = "";
+		this._eleNotes = [];
+		for(let i = 0; i < notes.length; i++){
+			let result = new EleNote().init(notes[i], this.getNotation(), "white", this.getStringGauge(), this.getOrientation());
+			this._eleNotes.push(result);
+			this._uiString.appendChild(result.getEle());
 		}
-		if(!(typeof length !== "number") && length < 1){
-			throw new TypeError("parameter length should be a number which is greater than 0: " + length);
+		this.markKeys(this.getMarkKeys());
+		this.markInlays(this.getMarkInlays());
+	}
+
+	/**
+		@param {string} tune - in what key we are tuning.
+	*/
+	setTune(tune){
+		if(!(typeof tune === "string" || tune instanceof String)){
+			throw new TypeError("parameter tune should be string: " + tune);
+		}
+		this._tune = MusicTheory.convertAccidental(tune, this.getNotation());
+		this._recreateNotes();
+	}
+
+	getTune(){ return this._tune; }
+
+	/**
+		@param {string} notation - in either "#" or "b".
+	*/
+	setNotation(notation){
+		if(!(typeof notation === "string" || notation instanceof String)){
+			throw new TypeError("parameter notation should be typef of string: " + notation);
 		}
 		if(!(notation === "#" || notation === "b")){
 			throw new TypeError("parameter notation should be either '#' or 'b': " + notation);
 		}
-		if(typeof includeOpenFret !== "boolean"){
-			throw new TypeError("parameter includeOpenFret should be type of boolean: " + includeOpenFret);
-		}
-		// if parameter length is equal to the length passed last time, then only updates the text inside these notes.
-		let notes = MusicTheory.tuning(tuning, length, notation, includeOpenFret);
-		if(this._eleNotes.length === notes.length){
-			for(let i = 0; i < notes.length; i++){
-				this._eleNotes[i].setNoteName(notes[i], notation);
-			}
-		}
-		// if not then recreate everything.
-		else {
-			this._uiString.innerHTML = "";
-			this._eleNotes = [];
-			for(let i = 0; i < notes.length; i++){
-				let result = new EleNote().init(notes[i], notation, "white", this.getStringGauge(), this.getOrientation());
-				this._eleNotes.push(result);
-				this._uiString.appendChild(result.getEle());
-			}
-		}
-		this._tuning = MusicTheory.convertAccidental(tuning, notation);
+		this._notation = notation;
+		this.setTune(this.getTune());
 	}
 
-	getTuning(){
-		return this._tuning;
+	getNotation(){ return this._notation; }
+
+	/**
+		@param {number} length - how long should the fretboard be.
+	*/
+	setStringLength(length){
+		if(typeof length !== "number" || length < 0){
+			throw new TypeError("parameter length should be greater than 0:" + length);
+		}
+		this._stringLength = length;
+		this._recreateNotes();
 	}
 
+	getStringLength(){ return this._stringLength; };
+
+	/**
+		@param {number} gauge - how thick the string will be displayed, unit in px.
+	*/
 	setStringGauge(gauge){
 		if(typeof gauge !== "number" || gauge < 0){
 			throw new TypeError("parameter gauge should be greater than 0:" + gauge);
@@ -74,12 +105,14 @@ export class EleString{
 			this._eleNotes[i].setStringGauge(gauge);
 		}
 		this._stringGauge = gauge;
+		this._recreateNotes();
 	}
 
-	getStringGauge(){
-		return this._stringGauge;
-	}
+	getStringGauge(){ return this._stringGauge; }
 
+	/**
+		@param {number} orientation - which orientation the string will be displayed. Should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL;
+	*/
 	setOrientation(orientation){
 		if(!(orientation === Config.ORI_VERTICAL || orientation === Config.ORI_HORIZONTAL)){
 			throw new TypeError("parameter orientation should be either Config.ORI_VERTICAL or Config.ORI_HORIZONTAL: " + orientation);
@@ -88,11 +121,10 @@ export class EleString{
 			this._eleNotes[i].setOrientation(orientation);
 		}
 		this._orientation = orientation;
+		this._recreateNotes();
 	}
 
-	getOrientation(){
-		return this._orientation;
-	}
+	getOrientation(){ return this._orientation; }
 
 	/**
 		to make specified keys visible.
@@ -116,6 +148,7 @@ export class EleString{
 				}
 			}
 		}
+		this._markKeys = target;
 		return result;
 
 		function resetDisplay(){
@@ -126,16 +159,13 @@ export class EleString{
 		}
 	}
 
-	getEle(){
-		return this._uiString;
-	}
+	getMarkKeys(){ return this._markKeys; }
 
-	getEleNotes(){
-		return this._eleNotes;
-	}
+	getEle(){ return this._uiString; }
+	getEleNotes(){ return this._eleNotes; }
 
 	/**
-		@param {array} targetFrets - indicates which frets you want to mark inlays. Will throw error if target fret doesn't exist.
+		@param {array} targetFrets - indicates which frets you want to mark inlays. Will ignore if target fret doesn't exist.
 		For simplicity, use human index convention on array, don't use computer field convention. For example, if you want to mark inalys
 		on fret 1, 3, 5, pass [1, 3, 5], don't try [0, 2, 4].
 		@return {array} - returns elements which were being marked.
@@ -145,7 +175,7 @@ export class EleString{
 			throw new TypeError("parameter targetFrets should be type of array with number: " + targetFrets);
 		}
 		clearInlays.call(this);
-		targetFrets = findUnique(targetFrets);
+		targetFrets = trimArray(targetFrets, this.getStringLength());
 		let result = [];
 		for(let i = 0; i < targetFrets.length; i++){
 			let index = targetFrets[i] - 1;
@@ -157,6 +187,7 @@ export class EleString{
 				throw new Error("target fret doesn't exist. targetFrets: " + targetFrets + ", fret length: " + this._eleNotes.length + ", translated index: " + index);
 			}
 		}
+		this._markInlays = targetFrets;
 		return result;
 
 		function clearInlays(){
@@ -165,13 +196,25 @@ export class EleString{
 			}
 		}
 
-		function findUnique(arr){
-			return arr.reduce(function(a, r){
-				if(a.indexOf(r) < 0){
-					a.push(r);
-				}
-				return a;
-			}, []);
+		function trimArray(arr, number){
+			arr = findUnique(arr.sort(function(a, b){
+				return a - b;
+			}));
+			arr = arr.filter((value) => {
+				return value <= number;
+			});
+			return arr;
+
+			function findUnique(arr){
+				return arr.reduce(function(a, r){
+					if(a.indexOf(r) < 0){
+						a.push(r);
+					}
+					return a;
+				}, []);
+			}
 		}
 	}
+
+	getMarkInlays(){ return this._markInlays; };
 }

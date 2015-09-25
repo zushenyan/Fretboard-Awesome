@@ -13,28 +13,34 @@ var babelify = require("babelify");
 var browserSync = require("browser-sync").create();
 var del = require("del");
 
+// variables
+var version = "0.1.0";
+var appName = "FretboardAwesome" + "-" + version;
+var debug = true;
+
 // paths
-var sassPath = "src/sass";
 var sassFiles = "src/sass/**/*.scss";
-var sassMainFile = "src/sass/fretboard-awesome.scss";
-var compiledSassPath = "src/css";
-var cssBundleFilePath = "src/css/fretboard-awesome.css";
+var sassMainFile = "src/sass/Main.scss";
+var cssDirPath = "src/css/";
+var cssDirAllFiles = cssDirPath + "*";
+var cssBundleFile = appName + ".css";
+var cssBundleFilePath = cssDirPath + cssBundleFile;
 
 var babelFiles = "src/babel/**/*.js";
 var babelMainFile = "src/babel/Main.js";
-var compiledBabelPath = "src/js";
-var jsBundleFile = "fretboard-awesome.js";
-var jsBundleMinFile = "fretboard-awesome.min.js";
-var jsBundleMinFilePath = "src/js/fretboard-awesome.min.js";
+var jsDirPath = "src/js/";
+var jsDirAllFiles = jsDirPath + "*";
+var jsBundleFile = appName + ".js";
+var jsBundleMinFile = appName + ".min.js";
+var jsBundleMinFilePath = jsDirPath + jsBundleMinFile;
 
 var testFiles = "src/test/**/*.js";
 var htmlFiles = "src/**/*.html";
 
 var distPath = "dist/";
-
-// variables
-var version = "0.0.9";
-var debug = true;
+var distAppPath = distPath + appName + "/";
+var distCssPath = distAppPath + "css/";
+var distJsPath = distAppPath + "js/";
 
 function errorHandler(err){
 	console.log(err.toString());
@@ -43,15 +49,16 @@ function errorHandler(err){
 }
 
 gulp.task("clean", function(){
-	return del([compiledSassPath, compiledBabelPath, distPath]);
+	return del([cssDirPath, jsDirPath, distPath]);
 });
 
 gulp.task("compileSass", function(){
 	return gulp.src(sassMainFile)
+		.pipe(rename(cssBundleFile))
 		.pipe(maps.init())
 		.pipe(sass().on("error", errorHandler))
 		.pipe(maps.write("."))
-		.pipe(gulp.dest(compiledSassPath));
+		.pipe(gulp.dest(cssDirPath));
 });
 
 gulp.task("compileBabel", function(){
@@ -60,14 +67,14 @@ gulp.task("compileBabel", function(){
 		.bundle()
 		.on("error", errorHandler)
 		.pipe(source(jsBundleFile))
-		.pipe(gulp.dest(compiledBabelPath));
+		.pipe(gulp.dest(jsDirPath));
 });
 
 gulp.task("minifyJs", ["compileBabel"], function(){
-	return gulp.src(compiledBabelPath + "/" + jsBundleFile)
+	return gulp.src(jsDirPath + "/" + jsBundleFile)
 		.pipe(uglify())
 		.pipe(rename(jsBundleMinFile))
-		.pipe(gulp.dest(compiledBabelPath));
+		.pipe(gulp.dest(jsDirPath));
 });
 
 gulp.task("watch",  ["clean", "compileSass", "compileBabel"], function(){
@@ -83,6 +90,8 @@ gulp.task("watch",  ["clean", "compileSass", "compileBabel"], function(){
 gulp.task("build", ["clean", "compileSass", "minifyJs"]);
 
 gulp.task("product", ["build"], function(){
-	return gulp.src([jsBundleMinFilePath, cssBundleFilePath])
-	.pipe(gulp.dest(distPath));
+	gulp.src(jsDirAllFiles)
+	.pipe(gulp.dest(distJsPath));
+	gulp.src(cssDirAllFiles)
+	.pipe(gulp.dest(distCssPath));
 });
