@@ -13,7 +13,7 @@ var mark = [
 ];
 
 var a = new fa.FretboardAwesome().init(target);
-a.setTuning(tuning);
+a.setTuning([]);
 a.setNotation(notation);
 a.setFretboardLength(length);
 a.setStringStartGauge(6);

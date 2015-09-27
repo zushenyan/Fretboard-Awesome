@@ -8,6 +8,9 @@ export class FretboardAwesome extends EleFretboard{
 		this._domId = "";
 		this._viewportSize = Config.VIEWPORT_SIZE_DEFAULT;
 
+		this._isDragging = false;
+		this._scrollPosition = {x: 0, y: 0};
+
 		this._uiTuningContainer = document.createElement("div");
 		this._uiViewportContainer = document.createElement("div");
 		this._uiMainContainer = null;
@@ -74,6 +77,7 @@ export class FretboardAwesome extends EleFretboard{
 				}
 
 				function dragMove(e){
+					ele.scrollLeft;
 					e.preventDefault();
 					if(isDragging){
 						let newX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;

@@ -11,6 +11,7 @@ Supports all the latest browsers and iOS.
 * v0.1.0
 	* Make structure more make sense.
 	* Remove includeOpenFret option. It's really confusing to people, including myself.
+	* fixed some bugs.
 
 ### To Do
 ###### Refactoring

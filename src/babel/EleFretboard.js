@@ -172,7 +172,12 @@ export class EleFretboard extends AbstractFretboard{
 		mid = mid < 0 ? 0 :
 					mid > length ? length : mid;
 		this._markInlays = targetFrets;
-		return this._eleStrings[mid].markInlays(targetFrets);
+		if(this._eleStrings[mid]){
+			return this._eleStrings[mid].markInlays(targetFrets);
+		}
+		else{
+			return null;
+		}
 	}
 
 	getMarkInlays(){ return this._markInlays; };
