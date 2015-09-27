@@ -14,7 +14,7 @@ Supports all the latest browsers and iOS.
 
 ### To Do
 ###### Refactoring
-Currently the structure is a mess, simply because I wrote it in a rush. If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.
+Currently the structure is a mess, simply because I wrote it in a rush. ~~If you really look into my code, you will find - When there is setter, there is a getter to pair with right? Actually, I missed the `getTuning()`. What was I doing? I was drunk then, maybe.~~ **fixed in v0.1.0**
 ###### Better Access Way for Dummies
 My original purpose on init and setting shuold be more comfortable, dummy-friendly:
 ```JavaScript
