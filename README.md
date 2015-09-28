@@ -5,6 +5,8 @@ Supports all the latest browsers and iOS.
 
 [Behold the awesomeness!](http://zushenyan.github.io/Fretboard-Awesome/)
 
+or take [Guitar Scale Builder](https://github.com/zushenyan/Guitar-Scale-Builder) a look, it's one of my project which uses Fretboard Awesome.
+
 **Still in early development phase, specification may change anytime.**
 
 ### Change log
